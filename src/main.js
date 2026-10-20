@@ -1,4 +1,5 @@
 import './style.css';
+import './pages.css';
 
 // Where "Map my expansion" submissions go. Set VITE_FORM_ENDPOINT to a form
 // service URL (Formspree, Basin, etc.) to post the answers as JSON; without it
@@ -45,10 +46,12 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   const singles = document.querySelectorAll(
     'main .split-head, main .kicker, main h2, .whatwedo__intro, .problem__intro, .problem__stat, ' +
       '.problem__list, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
-      '.how__row > *, .mapform__head, .mapform__form, .closing__left, .closing__right, .team__notes',
+      '.how__row > *, .mapform__head, .mapform__form, .closing__left, .closing__right, .team__notes, ' +
+      '.svc__body, .profile, .guide__lead, .note, .office > *, [data-reveal]',
   );
   const groups = document.querySelectorAll(
-    '.brands__row, .stages, .sides__cards, .service-list, .stats, .team__grid, .legend, .ways',
+    '.brands__row, .stages, .sides__cards, .service-list, .stats, .team__grid, .legend, .ways, ' +
+      '.jump__row, .profiles__tabs, .why__grid, .link-cards, .contact-ways, .faq, .svc__list, [data-reveal-group]',
   );
 
   const targets = new Set(singles);
@@ -85,73 +88,159 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
 
 if (!prefersReducedMotion) document.documentElement.classList.add('motion');
 
+// Profile tabs (For Franchisors / For Franchisees). Arrow keys move between
+// tabs, and a link to a panel's id (franchisors.html#international) opens it.
+for (const tabs of document.querySelectorAll('[data-tabs]')) {
+  const buttons = [...tabs.querySelectorAll('[role="tab"]')];
+
+  const select = (button, { focus = false, animate = true } = {}) => {
+    for (const other of buttons) {
+      const selected = other === button;
+      other.setAttribute('aria-selected', String(selected));
+      other.tabIndex = selected ? 0 : -1;
+      const panel = document.getElementById(other.getAttribute('aria-controls'));
+      panel.hidden = !selected;
+      panel.classList.remove('is-entering');
+      if (selected && animate) {
+        void panel.offsetWidth;
+        panel.classList.add('is-entering', 'is-visible');
+      }
+    }
+    if (focus) button.focus();
+  };
+
+  tabs.addEventListener('click', (event) => {
+    const button = event.target.closest('[role="tab"]');
+    if (button) select(button);
+  });
+
+  tabs.addEventListener('keydown', (event) => {
+    const index = buttons.indexOf(event.target);
+    if (index < 0) return;
+    const moves = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+    let next = null;
+    if (event.key in moves) next = buttons[(index + moves[event.key] + buttons.length) % buttons.length];
+    if (event.key === 'Home') next = buttons[0];
+    if (event.key === 'End') next = buttons[buttons.length - 1];
+    if (!next) return;
+    event.preventDefault();
+    select(next, { focus: true });
+  });
+
+  const openFromHash = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const button = buttons.find((b) => b.getAttribute('aria-controls') === id);
+    if (!button) return;
+    select(button, { animate: false });
+    tabs.scrollIntoView({ block: 'start' });
+  };
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+}
+
+// Field guide contents: highlight the guide currently on screen
+const tocLinks = [...document.querySelectorAll('.toc a')];
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  const tocObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        for (const link of tocLinks) {
+          link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`);
+        }
+      }
+    },
+    { rootMargin: '-40% 0px -55% 0px' },
+  );
+  for (const link of tocLinks) {
+    const guide = document.querySelector(link.getAttribute('href'));
+    if (guide) tocObserver.observe(guide);
+  }
+}
+
 // "Map your expansion" form
 const form = document.getElementById('expansion-form');
-const status = form.querySelector('.mapform__status');
+if (form) setUpForm(form);
 
-function collect() {
-  const data = new FormData(form);
-  return {
-    concept: data.get('concept')?.trim() || '',
-    stage: data.get('stage') || '',
-    side: data.get('side') || '',
-    needs: data.getAll('needs'),
-    name: data.get('name')?.trim() || '',
-    email: data.get('email')?.trim() || '',
+function setUpForm(form) {
+  const status = form.querySelector('.mapform__status');
+
+  // Links from the profile pages pre-select answers, e.g.
+  // contact.html?side=Franchisor&stage=Franchising&need=Sites#contact
+  const params = new URLSearchParams(location.search);
+  const pick = (name, values) => {
+    const inputs = [...form.querySelectorAll(`input[name="${name}"]`)];
+    if (!values.length || !inputs.some((input) => values.includes(input.value))) return;
+    for (const input of inputs) input.checked = values.includes(input.value);
   };
-}
+  pick('side', params.getAll('side'));
+  pick('stage', params.getAll('stage'));
+  pick('needs', params.getAll('need'));
 
-function validate() {
-  let firstInvalid = null;
-  for (const field of [form.name, form.email]) {
-    const valid = field.checkValidity();
-    field.setAttribute('aria-invalid', String(!valid));
-    if (!valid && !firstInvalid) firstInvalid = field;
-  }
-  return firstInvalid;
-}
-
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const invalid = validate();
-  if (invalid) {
-    status.textContent = 'Please add your name and a valid email so we can reply.';
-    invalid.focus();
-    return;
+  function collect() {
+    const data = new FormData(form);
+    return {
+      concept: data.get('concept')?.trim() || '',
+      stage: data.get('stage') || '',
+      side: data.get('side') || '',
+      needs: data.getAll('needs'),
+      name: data.get('name')?.trim() || '',
+      email: data.get('email')?.trim() || '',
+    };
   }
 
-  const answers = collect();
-
-  if (FORM_ENDPOINT) {
-    status.textContent = 'Sending…';
-    try {
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(answers),
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      status.textContent = 'Thank you. We’ll be in touch to map the first moves.';
-    } catch {
-      status.textContent = 'Something went wrong sending the form. Please try again.';
+  function validate() {
+    let firstInvalid = null;
+    for (const field of [form.name, form.email]) {
+      const valid = field.checkValidity();
+      field.setAttribute('aria-invalid', String(!valid));
+      if (!valid && !firstInvalid) firstInvalid = field;
     }
-    return;
+    return firstInvalid;
   }
 
-  const body = [
-    `Concept: ${answers.concept || '-'}`,
-    `Where it is today: ${answers.stage || '-'}`,
-    `Side: ${answers.side || '-'}`,
-    `Needs next: ${answers.needs.join(', ') || '-'}`,
-    '',
-    `${answers.name} <${answers.email}>`,
-  ].join('\n');
-  const subject = `Map my expansion: ${answers.name}`;
-  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  status.textContent = 'Your email app should open with your answers ready to send.';
-});
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const invalid = validate();
+    if (invalid) {
+      status.textContent = 'Please add your name and a valid email so we can reply.';
+      invalid.focus();
+      return;
+    }
 
-for (const field of [form.name, form.email]) {
-  field.addEventListener('input', () => field.removeAttribute('aria-invalid'));
+    const answers = collect();
+
+    if (FORM_ENDPOINT) {
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(answers),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = 'Thank you. We’ll be in touch to map the first moves.';
+      } catch {
+        status.textContent = 'Something went wrong sending the form. Please try again.';
+      }
+      return;
+    }
+
+    const body = [
+      `Concept: ${answers.concept || '-'}`,
+      `Where it is today: ${answers.stage || '-'}`,
+      `Side: ${answers.side || '-'}`,
+      `Needs next: ${answers.needs.join(', ') || '-'}`,
+      '',
+      `${answers.name} <${answers.email}>`,
+    ].join('\n');
+    const subject = `Map my expansion: ${answers.name}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    status.textContent = 'Your email app should open with your answers ready to send.';
+  });
+
+  for (const field of [form.name, form.email]) {
+    field.addEventListener('input', () => field.removeAttribute('aria-invalid'));
+  }
 }
