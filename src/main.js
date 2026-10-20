@@ -43,7 +43,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   const singles = document.querySelectorAll(
-    'main .split-head, main .kicker, main h2, .journey, .whatwedo__intro, .problem__intro, .problem__stat, ' +
+    'main .split-head, main .kicker, main h2, .whatwedo__intro, .problem__intro, .problem__stat, ' +
       '.problem__list, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
       '.how__row > *, .mapform__head, .mapform__form, .closing__left, .closing__right, .team__notes',
   );
