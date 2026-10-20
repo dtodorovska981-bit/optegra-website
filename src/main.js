@@ -37,6 +37,30 @@ mapStates?.addEventListener('pointerover', (event) => {
   if (state && state !== mapStates.lastElementChild) mapStates.append(state);
 });
 
+// Process carousel: arrow buttons page one card at a time; the track also
+// scrolls natively by touch, trackpad and keyboard.
+const processTrack = document.getElementById('process-track');
+const processButtons = document.querySelectorAll('.process__btn');
+
+function updateProcessButtons() {
+  const max = processTrack.scrollWidth - processTrack.clientWidth - 2;
+  processButtons[0].disabled = processTrack.scrollLeft <= 2;
+  processButtons[1].disabled = processTrack.scrollLeft >= max;
+}
+
+if (processTrack) {
+  for (const button of processButtons) {
+    button.addEventListener('click', () => {
+      const card = processTrack.firstElementChild;
+      const step = card.getBoundingClientRect().width + parseFloat(getComputedStyle(processTrack).columnGap);
+      processTrack.scrollBy({ left: step * Number(button.dataset.dir), behavior: 'smooth' });
+    });
+  }
+  processTrack.addEventListener('scroll', updateProcessButtons, { passive: true });
+  window.addEventListener('resize', updateProcessButtons);
+  updateProcessButtons();
+}
+
 // Scroll reveal: sections fade up as they enter the viewport, list items in a
 // short stagger. Skipped entirely for visitors who prefer reduced motion.
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -44,7 +68,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   const singles = document.querySelectorAll(
     'main .split-head, main .kicker, main h2, .whatwedo__intro, .problem__intro, .problem__stat, ' +
-      '.problem__list, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
+      '.problem__list, .process__intro, .process__track, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
       '.how__row > *, .mapform__head, .mapform__form, .closing__left, .closing__right, .team__notes',
   );
   const groups = document.querySelectorAll(

@@ -149,17 +149,10 @@ section {
   color: var(--slate);
 }
 
-.kicker__bar {
-  width: 22px;
-  height: 2px;
-  background: var(--blue);
-  flex: none;
-}
-
 .kicker--light { color: var(--white); }
 .kicker--blue { color: var(--blue); }
 .kicker--sky { color: var(--sky); letter-spacing: 2.07px; }
-.kicker--sky .kicker__bar { background: var(--sky); }
+.kicker--medium { font-weight: 500; letter-spacing: 2.07px; }
 
 .eyebrow {
   font-size: 12px;
@@ -821,6 +814,237 @@ section {
   color: rgba(90, 101, 119, 0.8);
 }
 
+/* ---------- The process (carousel) ---------- */
+
+.process { padding: 120px 0; }
+
+.process__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.process__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.process__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.2;
+  letter-spacing: -0.44px;
+  color: var(--charcoal);
+}
+
+.process__lead {
+  max-width: 620px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--slate);
+}
+
+.process__nav { display: flex; gap: 10px; flex: none; }
+
+.process__btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(46, 52, 64, 0.2);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--charcoal);
+  font: 400 22px/1 var(--font-sans);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.process__btn:hover:not(:disabled) { background: var(--charcoal); color: var(--white); }
+.process__btn:disabled { opacity: 0.35; cursor: default; }
+
+/* The track bleeds to the viewport edge but its first card lines up with the
+   page container, matching the Figma layout. */
+.process__track {
+  --track-inset: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+  display: flex;
+  gap: 40px;
+  margin-top: 60px;
+  padding: 0 var(--track-inset);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--track-inset);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.process__track::-webkit-scrollbar { display: none; }
+
+.process-card {
+  position: relative;
+  flex: none;
+  width: min(1080px, 100%);
+  height: 560px;
+  border-radius: 28px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  color: var(--white);
+  isolation: isolate;
+}
+
+.process-card__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.process-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(5, 6, 8, 0.82), rgba(5, 6, 8, 0.5) 60%, rgba(5, 6, 8, 0.35));
+}
+
+.process-card__copy {
+  position: absolute;
+  left: 56px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 390px;
+}
+
+.process-card h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 40px;
+  letter-spacing: -0.8px;
+}
+
+.process-card__copy p {
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.process__panel {
+  position: absolute;
+  right: 56px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  width: 440px;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--charcoal);
+}
+
+.process__badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.process__badge i,
+.process__sides i {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+.process__sides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 14px 0 12px;
+}
+
+.process__sides li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.process__sides li.is-on { color: var(--white); }
+.process__sides li.is-on i { border-color: var(--blue); background: var(--blue); }
+
+.process__fields div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.process__fields dt { font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.6); }
+.process__fields dd { margin: 0; font-size: 15px; font-weight: 600; }
+.process__fields dd.is-empty { font-size: 13px; font-weight: 400; color: rgba(255, 255, 255, 0.4); }
+
+.process__cta {
+  margin-top: 12px;
+  padding: 11px;
+  border-radius: 6px;
+  background: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.process__meta {
+  margin: 14px 0 30px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.process__sites { margin-bottom: 30px; }
+
+.process__sites li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.process__pin { flex: none; width: 8px; height: 11px; fill: rgba(255, 255, 255, 0.4); }
+
+.process__siteName {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.process__siteScore { font-weight: 600; color: rgba(255, 255, 255, 0.5); }
+
+.process__sites li.is-top .process__pin { fill: var(--blue); }
+.process__sites li.is-top .process__siteName { color: var(--white); }
+.process__sites li.is-top .process__siteScore { color: var(--blue); }
+
 /* ---------- Concept to opening band ---------- */
 
 .band {
@@ -1139,8 +1363,9 @@ section {
 .how__photo {
   position: relative;
   flex: none;
+  align-self: stretch;
   width: 560px;
-  height: 440px;
+  min-height: 440px;
   border-radius: 14px;
   overflow: hidden;
 }
@@ -1202,10 +1427,8 @@ section {
 .ways h3 {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 23px;
+  font-size: 28px;
 }
-
-.ways__active h3 { font-size: 28px; }
 
 .ways__desc {
   font-size: 14.5px;
@@ -1564,7 +1787,9 @@ legend.q { margin-bottom: 14px; }
   .network__statement { font-size: 24px; }
 
   .how__row { flex-direction: column; align-items: stretch; }
-  .how__photo { width: 100%; height: 380px; }
+  .process__panel { display: none; }
+  .process-card__copy { width: auto; right: 56px; max-width: 520px; }
+  .how__photo { width: 100%; height: 380px; min-height: 0; }
 
   .mapform__head { flex-direction: column; align-items: flex-start; gap: 20px; }
   .mapform__questions { gap: 34px; }
@@ -1652,7 +1877,16 @@ legend.q { margin-bottom: 14px; }
   .network__statement { font-size: 21px; }
 
   .how__photo { height: 300px; }
-  .ways h3, .ways__active h3 { font-size: 21px; }
+  .process { padding: 80px 0; }
+  .process__head { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .process__title { font-size: 32px; }
+  .process__lead { font-size: 16px; }
+  .process__track { gap: 16px; margin-top: 32px; }
+  .process-card { height: 440px; border-radius: 20px; }
+  .process-card__copy { left: 24px; right: 24px; top: auto; bottom: 28px; transform: none; }
+  .process-card h3 { font-size: 30px; }
+  .process-card__copy p { font-size: 15.5px; }
+  .ways h3 { font-size: 21px; }
 
   .mapform__questions,
   .mapform__contact { grid-template-columns: 1fr; gap: 34px; }
