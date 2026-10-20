@@ -252,66 +252,69 @@
       </section>
 
       <section class="process section--mist" aria-labelledby="process-title">
-        <div class="container process__head">
-          <div class="process__intro">
-            <p class="kicker kicker--medium">The process</p>
-            <h2 class="process__title" id="process-title">Franchise expansion, done the clearer way.</h2>
-            <p class="process__lead">From first call to opening day, every expansion moves through the same three steps.</p>
+        <div class="process__sticky">
+          <div class="container process__head">
+            <div class="process__intro">
+              <p class="kicker kicker--medium">The process</p>
+              <h2 class="process__title" id="process-title">Franchise expansion, done the clearer way.</h2>
+              <p class="process__lead">From first call to opening day, every expansion moves through the same three steps.</p>
+            </div>
+            <div class="process__nav">
+              <button type="button" class="process__btn" data-dir="-1" aria-label="Previous step" aria-controls="process-track">‹</button>
+              <button type="button" class="process__btn" data-dir="1" aria-label="Next step" aria-controls="process-track">›</button>
+            </div>
           </div>
-          <div class="process__nav">
-            <button type="button" class="process__btn" data-dir="-1" aria-label="Previous step" aria-controls="process-track">‹</button>
-            <button type="button" class="process__btn" data-dir="1" aria-label="Next step" aria-controls="process-track">›</button>
-          </div>
+          <ol class="process__track" id="process-track">
+            <li class="process-card">
+              <img src="images/process/studied.jpg" alt="" class="process-card__photo" loading="lazy" />
+              <div class="process-card__copy">
+                <h3>Studied</h3>
+                <p>Get a market study built on real trade-area data, demand drivers and competition for your concept.</p>
+              </div>
+              <div class="process__panel" aria-hidden="true">
+                <p class="process__badge"><i></i>Get a market study</p>
+                <ul class="process__sides">
+                  <li class="is-on"><i></i>Franchisor</li><li><i></i>Franchisee</li><li><i></i>Multi-unit</li><li><i></i>International</li>
+                </ul>
+                <dl class="process__fields">
+                  <div><dt>Concept</dt><dd>Fast-casual QSR</dd></div>
+                  <div><dt>Target Market</dt><dd>Detroit, MI</dd></div>
+                  <div><dt>Format</dt><dd>Inline, 1,800 sq ft</dd></div>
+                  <div><dt>Target Opening</dt><dd>Q2 2027</dd></div>
+                  <div><dt>Budget</dt><dd class="is-empty">–</dd></div>
+                  <div><dt>Company Name</dt><dd class="is-empty">–</dd></div>
+                </dl>
+                <a href="#contact" class="process__cta" tabindex="-1">Request a Study</a>
+              </div>
+            </li>
+            <li class="process-card">
+              <img src="images/process/matched.jpg" alt="" class="process-card__photo" loading="lazy" />
+              <div class="process-card__copy">
+                <h3>Matched</h3>
+                <p>The right franchisee, the right site and the right terms, sourced through our network and negotiated tenant-side.</p>
+              </div>
+              <div class="process__panel process__panel--sites" aria-hidden="true">
+                <p class="process__badge"><i></i>Matching</p>
+                <p class="process__meta">Matching sites for Study #OP-2741</p>
+                <ul class="process__sites">
+                      <li class="is-top"><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Michigan Ave Corridor</span><span class="process__siteDist">1.2 mi</span><span class="process__siteScore">★ 4.9</span></li>
+                      <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Fairlane Retail Center</span><span class="process__siteDist">2.4 mi</span><span class="process__siteScore">★ 4.7</span></li>
+                      <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Ford Rd Strip Center</span><span class="process__siteDist">3.1 mi</span><span class="process__siteScore">★ 4.6</span></li>
+                      <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Telegraph Rd Pad Site</span><span class="process__siteDist">4.8 mi</span><span class="process__siteScore">★ 4.8</span></li>
+                      <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Dearborn Heights Inline</span><span class="process__siteDist">6.0 mi</span><span class="process__siteScore">★ 4.4</span></li>
+                </ul>
+              </div>
+            </li>
+            <li class="process-card">
+              <img src="images/process/opened.jpg" alt="" class="process-card__photo" loading="lazy" />
+              <div class="process-card__copy">
+                <h3>Opened</h3>
+                <p>Lease signed, build-out managed and doors open, with every handoff to legal, design and construction confirmed.</p>
+              </div>
+            </li>
+          </ol>
+          <div class="container"><div class="process__progress" aria-hidden="true"><span></span></div></div>
         </div>
-        <ol class="process__track" id="process-track">
-          <li class="process-card">
-            <img src="images/process/studied.jpg" alt="" class="process-card__photo" loading="lazy" />
-            <div class="process-card__copy">
-              <h3>Studied</h3>
-              <p>Get a market study built on real trade-area data, demand drivers and competition for your concept.</p>
-            </div>
-            <div class="process__panel" aria-hidden="true">
-              <p class="process__badge"><i></i>Get a market study</p>
-              <ul class="process__sides">
-                <li class="is-on"><i></i>Franchisor</li><li><i></i>Franchisee</li><li><i></i>Multi-unit</li><li><i></i>International</li>
-              </ul>
-              <dl class="process__fields">
-                <div><dt>Concept</dt><dd>Fast-casual QSR</dd></div>
-                <div><dt>Target Market</dt><dd>Detroit, MI</dd></div>
-                <div><dt>Format</dt><dd>Inline, 1,800 sq ft</dd></div>
-                <div><dt>Target Opening</dt><dd>Q2 2027</dd></div>
-                <div><dt>Budget</dt><dd class="is-empty">–</dd></div>
-                <div><dt>Company Name</dt><dd class="is-empty">–</dd></div>
-              </dl>
-              <a href="#contact" class="process__cta" tabindex="-1">Request a Study</a>
-            </div>
-          </li>
-          <li class="process-card">
-            <img src="images/process/matched.jpg" alt="" class="process-card__photo" loading="lazy" />
-            <div class="process-card__copy">
-              <h3>Matched</h3>
-              <p>The right franchisee, the right site and the right terms, sourced through our network and negotiated tenant-side.</p>
-            </div>
-            <div class="process__panel process__panel--sites" aria-hidden="true">
-              <p class="process__badge"><i></i>Matching</p>
-              <p class="process__meta">Matching sites for Study #OP-2741</p>
-              <ul class="process__sites">
-                    <li class="is-top"><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Michigan Ave Corridor</span><span class="process__siteDist">1.2 mi</span><span class="process__siteScore">★ 4.9</span></li>
-                    <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Fairlane Retail Center</span><span class="process__siteDist">2.4 mi</span><span class="process__siteScore">★ 4.7</span></li>
-                    <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Ford Rd Strip Center</span><span class="process__siteDist">3.1 mi</span><span class="process__siteScore">★ 4.6</span></li>
-                    <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Telegraph Rd Pad Site</span><span class="process__siteDist">4.8 mi</span><span class="process__siteScore">★ 4.8</span></li>
-                    <li><svg class="process__pin" viewBox="0 0 8 11" aria-hidden="true"><path d="M4 .5A3.5 3.5 0 0 0 .5 4c0 2.6 3.5 6.5 3.5 6.5S7.5 6.6 7.5 4A3.5 3.5 0 0 0 4 .5Zm0 4.8a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z"/></svg><span class="process__siteName">Dearborn Heights Inline</span><span class="process__siteDist">6.0 mi</span><span class="process__siteScore">★ 4.4</span></li>
-              </ul>
-            </div>
-          </li>
-          <li class="process-card">
-            <img src="images/process/opened.jpg" alt="" class="process-card__photo" loading="lazy" />
-            <div class="process-card__copy">
-              <h3>Opened</h3>
-              <p>Lease signed, build-out managed and doors open, with every handoff to legal, design and construction confirmed.</p>
-            </div>
-          </li>
-        </ol>
       </section>
 
       <section class="band" aria-label="From concept to opening">
@@ -489,29 +492,37 @@
               </figcaption>
             </figure>
             <ol class="ways">
-              <li>
+              <li tabindex="0">
                 <p class="ways__label">01 &nbsp;/&nbsp; For franchisors · Franchise development</p>
                 <h3>Build the franchise</h3>
-                <p class="ways__desc">Readiness, unit economics and franchise fee modeling, FDD and legal coordination, and a sales launch built to recruit the right franchisees.</p>
-                <p class="ways__tags">Readiness review · Unit economics · Fee structure · FDD coordination · Sales launch</p>
+                <div class="ways__more"><div>
+                  <p class="ways__desc">Readiness, unit economics and franchise fee modeling, FDD and legal coordination, and a sales launch built to recruit the right franchisees.</p>
+                  <p class="ways__tags">Readiness review · Unit economics · Fee structure · FDD coordination · Sales launch</p>
+                </div></div>
               </li>
-              <li>
+              <li tabindex="0">
                 <p class="ways__label">02 &nbsp;/&nbsp; For both sides · Franchisee placement</p>
                 <h3>Match brands and operators</h3>
-                <p class="ways__desc">An Ideal Franchisee Profile, a visible vetting standard and a qualification pipeline, so brands meet operators who can actually open and run the unit.</p>
-                <p class="ways__tags">Ideal Franchisee Profile · Vetting standard · Qualification pipeline · Introductions</p>
+                <div class="ways__more"><div>
+                  <p class="ways__desc">An Ideal Franchisee Profile, a visible vetting standard and a qualification pipeline, so brands meet operators who can actually open and run the unit.</p>
+                  <p class="ways__tags">Ideal Franchisee Profile · Vetting standard · Qualification pipeline · Introductions</p>
+                </div></div>
               </li>
-              <li>
+              <li tabindex="0">
                 <p class="ways__label">03 &nbsp;/&nbsp; For both sides · Site selection + tenant rep</p>
                 <h3>Secure the right location</h3>
-                <p class="ways__desc">Market studies, tenant representation and execution management, from target market to signed lease and a clean handoff to legal, design and construction.</p>
-                <p class="ways__tags">Trade area · Competitive map · Site scorecard · LOI + negotiation · Risk register</p>
+                <div class="ways__more"><div>
+                  <p class="ways__desc">Market studies, tenant representation and execution management, from target market to signed lease and a clean handoff to legal, design and construction.</p>
+                  <p class="ways__tags">Trade area · Competitive map · Site scorecard · LOI + negotiation · Risk register</p>
+                </div></div>
               </li>
-              <li>
+              <li tabindex="0">
                 <p class="ways__label">04 &nbsp;/&nbsp; For franchisees · Business planning</p>
                 <h3>Prove the numbers and fund it</h3>
-                <p class="ways__desc">A bank-ready business plan and financial model built for lenders, with plain-language FDD guidance and a clear path to SBA or bank approval.</p>
-                <p class="ways__tags">Business plan · Financial model · Lender package · SBA readiness</p>
+                <div class="ways__more"><div>
+                  <p class="ways__desc">A bank-ready business plan and financial model built for lenders, with plain-language FDD guidance and a clear path to SBA or bank approval.</p>
+                  <p class="ways__tags">Business plan · Financial model · Lender package · SBA readiness</p>
+                </div></div>
               </li>
             </ol>
           </div>
