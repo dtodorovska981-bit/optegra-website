@@ -37,6 +37,89 @@ mapStates?.addEventListener('pointerover', (event) => {
   if (state && state !== mapStates.lastElementChild) mapStates.append(state);
 });
 
+// Process carousel. On wide, tall-enough screens the section pins in place and
+// vertical scrolling slides the cards sideways; elsewhere the track scrolls
+// natively (touch, trackpad, keyboard). The arrows step one card either way,
+// and whichever card is in view is marked active so its contents animate in.
+const processSection = document.querySelector('.process');
+const processTrack = document.getElementById('process-track');
+
+if (processSection && processTrack) {
+  const cards = [...processTrack.children];
+  const [prevButton, nextButton] = processSection.querySelectorAll('.process__btn');
+  const progressBar = processSection.querySelector('.process__progress');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let pinned = false;
+  let distance = 0;
+  let active = -1;
+
+  const setActive = (index) => {
+    if (index === active) return;
+    active = index;
+    cards.forEach((card, i) => card.classList.toggle('is-active', i === index));
+    prevButton.disabled = index === 0;
+    nextButton.disabled = index === cards.length - 1;
+  };
+
+  // How far the track must travel for the last card to sit at the right gutter
+  const measure = () => {
+    processTrack.style.transform = '';
+    const last = cards[cards.length - 1];
+    const inset = parseFloat(getComputedStyle(processTrack).paddingRight);
+    return Math.max(0, last.offsetLeft + last.offsetWidth + inset - processTrack.clientWidth);
+  };
+
+  const pinnedProgress = () => {
+    const travelled = -processSection.getBoundingClientRect().top;
+    return distance ? Math.min(1, Math.max(0, travelled / distance)) : 0;
+  };
+
+  const update = () => {
+    if (pinned) {
+      const progress = pinnedProgress();
+      processTrack.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
+      progressBar.style.setProperty('--progress', progress.toFixed(4));
+      setActive(Math.round(progress * (cards.length - 1)));
+    } else {
+      const max = processTrack.scrollWidth - processTrack.clientWidth;
+      setActive(max > 0 ? Math.round((processTrack.scrollLeft / max) * (cards.length - 1)) : 0);
+    }
+  };
+
+  const layout = () => {
+    const wantPinned =
+      !reducedMotion.matches && window.innerWidth > 1100 && window.innerHeight >= 760;
+    pinned = wantPinned;
+    processSection.classList.toggle('is-pinned', pinned);
+    processSection.style.height = '';
+    if (pinned) {
+      distance = measure();
+      processSection.style.height = `calc(100vh - 74px + ${distance}px)`;
+    } else {
+      processTrack.style.transform = '';
+    }
+    update();
+  };
+
+  const go = (dir) => {
+    const target = Math.min(cards.length - 1, Math.max(0, active + dir));
+    if (pinned) {
+      const top = window.scrollY + processSection.getBoundingClientRect().top;
+      window.scrollTo({ top: top + (distance * target) / (cards.length - 1), behavior: 'smooth' });
+    } else {
+      const inset = parseFloat(getComputedStyle(processTrack).paddingLeft);
+      processTrack.scrollTo({ left: cards[target].offsetLeft - inset, behavior: 'smooth' });
+    }
+  };
+
+  prevButton.addEventListener('click', () => go(-1));
+  nextButton.addEventListener('click', () => go(1));
+  processTrack.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('scroll', () => pinned && update(), { passive: true });
+  window.addEventListener('resize', layout);
+  layout();
+}
+
 // Scroll reveal: sections fade up as they enter the viewport, list items in a
 // short stagger. Skipped entirely for visitors who prefer reduced motion.
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -44,7 +127,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   const singles = document.querySelectorAll(
     'main .split-head, main .kicker, main h2, .whatwedo__intro, .problem__intro, .problem__stat, ' +
-      '.problem__list, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
+      '.problem__list, .process__intro, .band__strip, .network__copy, .network__badge, .network__map, .network__statement, ' +
       '.how__row > *, .mapform__head, .mapform__form, .closing__left, .closing__right, .team__notes',
   );
   const groups = document.querySelectorAll(
