@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 88px;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -239,7 +240,7 @@ section {
 .hero {
   position: relative;
   min-height: 728px;
-  padding: 30px 0 110px;
+  padding: 106px 0 110px;
   background: #7787a6;
   color: var(--white);
   overflow: hidden;
@@ -259,6 +260,24 @@ section {
   background: linear-gradient(90deg, #2e3440 0%, rgba(46, 52, 64, 0.35) 89.9%, rgba(46, 52, 64, 0) 100%);
 }
 
+/* The bar stays pinned while scrolling: transparent over the hero, then a
+   solid charcoal strip once the page moves. */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  padding: 30px 0;
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.is-scrolled {
+  padding: 14px 0;
+  background: rgba(46, 52, 64, 0.94);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
 .nav {
   position: relative;
   z-index: 2;
@@ -267,7 +286,8 @@ section {
   justify-content: space-between;
 }
 
-.nav__logo img { width: 174px; height: auto; }
+.nav__logo img { width: 174px; height: auto; transition: width 0.3s ease; }
+.navbar.is-scrolled .nav__logo img { width: 150px; }
 
 .nav__menu {
   display: flex;
@@ -285,7 +305,26 @@ section {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.nav__links a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1.5px;
+  background: var(--sky);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
 .nav__links a:hover { color: var(--white); }
+.nav__links a:hover::after { transform: scaleX(1); }
 
 .nav__toggle {
   display: none;
@@ -399,7 +438,9 @@ section {
   height: 146px;
 }
 
-.brands__logo { height: auto; object-fit: contain; }
+.brands__logo { height: auto; object-fit: contain; transition: transform 0.3s ease; }
+.brands__row li:hover .brands__logo { transform: scale(1.06); }
+.stats li:hover { transform: translateY(-4px); box-shadow: 0 16px 30px -18px rgba(46, 52, 64, 0.45); }
 .brands__logo--haraz { width: 221px; }
 .brands__logo--samis { width: 113px; }
 .brands__logo--levelzero { width: 257px; }
@@ -578,6 +619,8 @@ section {
 }
 
 .service {
+  position: relative;
+  transition: background-color 0.3s ease;
   display: grid;
   grid-template-columns: 80px 1px 140px 320px 1fr 48px;
   align-items: center;
@@ -636,8 +679,13 @@ section {
   border-radius: 24px;
   font-size: 16px;
   font-weight: 600;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.25s ease;
 }
+
+.service:hover { background-color: rgba(255, 255, 255, 0.55); }
+.service__icon svg { transition: transform 0.35s ease; }
+.service:hover .service__icon svg { transform: translateY(-3px); }
+.service:hover .service__arrow { transform: translateX(4px); }
 
 .service__arrow:hover {
   background: var(--charcoal);
@@ -725,6 +773,7 @@ section {
 }
 
 .stats li {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -868,6 +917,12 @@ section {
   border: 2px solid var(--blue);
   object-fit: cover;
   background: var(--mist);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.person:hover .person__photo {
+  transform: scale(1.06);
+  box-shadow: 0 10px 20px -8px rgba(74, 144, 194, 0.6);
 }
 
 .person__num {
@@ -972,6 +1027,29 @@ section {
   height: auto;
   font-family: var(--font-sans);
 }
+
+/* Each state lifts toward the viewer on hover while the rest of the map
+   steps back slightly. Markers and labels sit above and ignore the pointer. */
+.map-state {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease, filter 0.35s ease;
+  cursor: pointer;
+}
+
+.map-hit { stroke: transparent; stroke-width: 7.5; pointer-events: stroke; }
+.map-base { transition: stroke 0.35s ease; }
+
+.map-states:hover .map-state:not(:hover) { opacity: 0.6; }
+
+.map-state:hover {
+  transform: translateY(-5px) scale(1.08);
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.55));
+}
+
+.map-state:hover .map-base { stroke: #7FA6C9; }
+
+.map-markers { pointer-events: none; }
 
 .map-label-bg { fill: rgba(46, 52, 64, 0.9); }
 .map-t { fill: rgba(255, 255, 255, 0.78); font-size: 12.5px; font-weight: 500; }
@@ -1483,7 +1561,11 @@ legend.q { margin-bottom: 14px; }
 @media (max-width: 720px) {
   :root { --gutter: 20px; }
 
-  .nav__logo img { width: 140px; }
+  .nav__logo img,
+  .navbar.is-scrolled .nav__logo img { width: 140px; }
+  .navbar { padding: 18px 0; }
+  .navbar.is-scrolled { padding: 12px 0; }
+  .hero { padding-top: 86px; }
   .hero { padding-bottom: 40px; }
   .hero__body { padding-top: 72px; }
   .hero__title { font-size: 44px; }
@@ -1564,7 +1646,45 @@ legend.q { margin-bottom: 14px; }
   .footer__bottom { flex-direction: column; }
 }
 
+/* ---------- Motion ---------- */
+
+/* main.js adds .motion to <html> only when the visitor has not asked for
+   reduced motion, so without JS everything is simply visible. */
+.motion .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.motion .hero__photo { animation: hero-settle 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+.motion .hero__copy > *,
+.motion .hero__caption {
+  animation: rise-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.motion .hero__copy > :nth-child(2) { animation-delay: 0.12s; }
+.motion .hero__copy > :nth-child(3) { animation-delay: 0.24s; }
+.motion .hero__copy > :nth-child(4) { animation-delay: 0.36s; }
+.motion .hero__caption { animation-delay: 0.5s; }
+
+@keyframes hero-settle {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }
