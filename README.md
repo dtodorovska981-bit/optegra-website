@@ -17,10 +17,18 @@ npm run preview   # serve the production build
 ## Project layout
 
 ```
-index.html            page markup (all sections, inline US network map)
-src/style.css         styles, design tokens and responsive breakpoints
-src/main.js           mobile menu and the "Map your expansion" form
-public/images/        logo, brand logos, photos, team portraits, icons
+index.html            home page (all sections, inline US network map)
+franchisors.html      For Franchisors: three profiles, roadmap, services
+franchisees.html      For Franchisees: two profiles, roadmap, services
+services.html         the four services in detail
+insights.html         market signals, field guides and FAQ
+contact.html          ways to start, the form, next steps and the office
+partials/             shared navigation, footer and contact form, pulled into
+                      each page with <!-- @include name --> (see vite.config.js)
+src/style.css         home page styles, design tokens and responsive breakpoints
+src/pages.css         components used by the inner pages
+src/main.js           mobile menu, scroll reveal, profile tabs and the form
+public/images/        logo, brand logos, photos, page heroes, team portraits, icons
 .github/workflows/    GitHub Pages deployment
 ```
 
