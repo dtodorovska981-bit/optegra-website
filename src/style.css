@@ -487,6 +487,8 @@ section {
   height: 146px;
 }
 
+.brands__row a { display: flex; border-radius: 4px; }
+.brands__row a:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
 .brands__logo { height: auto; object-fit: contain; transition: transform 0.3s ease; }
 .brands__row li:hover .brands__logo { transform: scale(1.06); }
 .stats li:hover { transform: translateY(-4px); box-shadow: 0 16px 30px -18px rgba(46, 52, 64, 0.45); }
