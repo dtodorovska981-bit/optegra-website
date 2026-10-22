@@ -1,0 +1,6 @@
+# optegraadvisors.com is the main domain. If optegra-advisors.info is added to
+# the Netlify site as a domain alias, every visit to it is sent here instead.
+https://optegra-advisors.info/*      https://optegraadvisors.com/:splat  301!
+http://optegra-advisors.info/*       https://optegraadvisors.com/:splat  301!
+https://www.optegra-advisors.info/*  https://optegraadvisors.com/:splat  301!
+http://www.optegra-advisors.info/*   https://optegraadvisors.com/:splat  301!
