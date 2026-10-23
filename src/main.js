@@ -1,11 +1,10 @@
 import './style.css';
 import './pages.css';
 
-// Where "Map my expansion" submissions go. Set VITE_FORM_ENDPOINT to a form
-// service URL (Formspree, Basin, etc.) to post the answers as JSON; without it
-// the form opens the visitor's email client addressed to VITE_CONTACT_EMAIL.
+// Where "Map my expansion" submissions go. By default they are posted to
+// Netlify Forms (the form is marked data-netlify in partials/contact-form.html).
+// Set VITE_FORM_ENDPOINT to another form service URL to post JSON there instead.
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || '';
-const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || '';
 
 // Mobile navigation
 const toggle = document.querySelector('.nav__toggle');
@@ -293,34 +292,36 @@ function setUpForm(form) {
 
     const answers = collect();
 
-    if (FORM_ENDPOINT) {
-      status.textContent = 'Sending…';
-      try {
-        const res = await fetch(FORM_ENDPOINT, {
+    status.textContent = 'Sending…';
+    try {
+      let res;
+      if (FORM_ENDPOINT) {
+        res = await fetch(FORM_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(answers),
         });
-        if (!res.ok) throw new Error(String(res.status));
-        form.reset();
-        status.textContent = 'Thank you. We’ll be in touch to map the first moves.';
-      } catch {
-        status.textContent = 'Something went wrong sending the form. Please try again.';
+      } else {
+        // Netlify Forms keeps one value per field, so the chosen needs are
+        // sent as a single comma-separated entry.
+        const body = new URLSearchParams({
+          'form-name': form.getAttribute('name'),
+          'company-website': form.elements['company-website'].value,
+          ...answers,
+          needs: answers.needs.join(', '),
+        });
+        res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
       }
-      return;
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.textContent = 'Thank you. We’ll be in touch to map the first moves.';
+    } catch {
+      status.textContent = 'Something went wrong sending the form. Please try again.';
     }
-
-    const body = [
-      `Concept: ${answers.concept || '-'}`,
-      `Where it is today: ${answers.stage || '-'}`,
-      `Side: ${answers.side || '-'}`,
-      `Needs next: ${answers.needs.join(', ') || '-'}`,
-      '',
-      `${answers.name} <${answers.email}>`,
-    ].join('\n');
-    const subject = `Map my expansion: ${answers.name}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    status.textContent = 'Your email app should open with your answers ready to send.';
   });
 
   for (const field of [form.name, form.email]) {

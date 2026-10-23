@@ -40,12 +40,11 @@ must be set to **GitHub Actions** (one-time step).
 
 ## Contact form
 
-The "Map your expansion" form works without a backend: it opens the visitor's email app with their answers.
-To change that, add repository variables under **Settings → Secrets and variables → Actions → Variables**:
+The "Map your expansion" form is a [Netlify Form](https://docs.netlify.com/forms/setup/) named
+`map-my-expansion`. Netlify detects it in the built HTML on each deploy, and submissions appear under
+**Forms** in the Netlify dashboard (form detection must be enabled for the site). Bots are filtered with a
+hidden honeypot field. Email notifications can be added in Netlify under **Forms → Form notifications**.
 
-| Variable        | Effect                                                                  |
-| --------------- | ----------------------------------------------------------------------- |
-| `CONTACT_EMAIL` | Address the email is sent to (for example `hello@optegra-advisors.info`) |
-| `FORM_ENDPOINT` | A form service URL (Formspree, Basin, …); answers are POSTed as JSON     |
-
-Re-run the deploy workflow after changing them.
+On hosts other than Netlify (such as the GitHub Pages build), set the repository variable `FORM_ENDPOINT`
+under **Settings → Secrets and variables → Actions → Variables** to a form service URL (Formspree, Basin, …)
+and the answers are POSTed there as JSON instead.
